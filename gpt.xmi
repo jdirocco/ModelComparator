@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<uml> 
+
+  <class name="ElectricityDistributionCompany"> 
+
+    <attribute visibility="-" name="distributionId" type="int"/> 
+
+    <attribute visibility="-" name="companyName" type="string"/> 
+
+    <operation visibility="+" name="registerMeter"/> 
+
+    <operation visibility="+" name="reportFault"/> 
+
+  </class> 
+
+  
+
+  <class name="Meter"> 
+
+    <attribute visibility="-" name="meterId" type="int"/> 
+
+    <attribute visibility="-" name="currentReading" type="double"/> 
+
+    <attribute visibility="-" name="lastReadingDate" type="date"/> 
+
+    <operation visibility="+" name="getReading"/> 
+
+    <operation visibility="+" name="setReading"/> 
+
+  </class> 
+
+  
+
+  <class name="BillingSystem"> 
+
+    <operation visibility="-" name="calculateInvoice"/> 
+
+    <operation visibility="-" name="generateBill"/> 
+
+    <operation visibility="-" name="sendBill"/> 
+
+  </class> 
+
+  
+
+  <class name="Invoice"> 
+
+    <attribute visibility="-" name="invoiceId" type="int"/> 
+
+    <attribute visibility="-" name="amount" type="double"/> 
+
+    <attribute visibility="-" name="dueDate" type="date"/> 
+
+    <attribute visibility="-" name="status" type="string"/> 
+
+    <operation visibility="+" name="markAsPaid"/> 
+
+  </class> 
+
+  
+
+  <class name="Payment"> 
+
+    <attribute visibility="-" name="paymentId" type="int"/> 
+
+    <attribute visibility="-" name="amount" type="double"/> 
+
+    <attribute visibility="-" name="paymentDate" type="date"/> 
+
+    <attribute visibility="-" name="isPaid" type="boolean"/> 
+
+  </class> 
+
+  
+
+  <class name="User"> 
+
+    <attribute visibility="-" name="userId" type="int"/> 
+
+    <attribute visibility="-" name="userName" type="string"/> 
+
+    <attribute visibility="-" name="address" type="string"/> 
+
+    <operation visibility="+" name="viewInvoice"/> 
+
+    <operation visibility="+" name="makePayment"/> 
+
+  </class> 
+
+  
+
+  <!-- Relationships --> 
+
+  <association> 
+
+    <class-end part="whole" role="ElectricityDistributionCompany" multiplicity="1"/> 
+
+    <class-end part="part" role="Meter" multiplicity="*"/> 
+
+  </association> 
+
+  
+
+  <association> 
+
+    <class-end part="whole" role="BillingSystem" multiplicity="1"/> 
+
+    <class-end part="part" role="Meter" multiplicity="*"/> 
+
+  </association> 
+
+  
+
+  <association> 
+
+    <class-end part="whole" role="BillingSystem" multiplicity="1"/> 
+
+    <class-end part="part" role="Invoice" multiplicity="*"/> 
+
+  </association> 
+
+  
+
+  <association> 
+
+    <class-end part="whole" role="BillingSystem" multiplicity="1"/> 
+
+    <class-end part="part" role="Payment" multiplicity="*"/> 
+
+  </association> 
+
+  
+
+  <association> 
+
+    <class-end part="whole" role="Invoice" multiplicity="1"/> 
+
+    <class-end part="part" role="User" multiplicity="*"/> 
+
+  </association> 
+
+  
+
+  <association> 
+
+    <class-end part="whole" role="Payment" multiplicity="1"/> 
+
+    <class-end part="part" role="User" multiplicity="*"/> 
+
+  </association> 
+
+</uml> 
