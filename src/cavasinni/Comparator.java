@@ -3,16 +3,21 @@ package cavasinni;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
+import org.eclipse.emf.ecore.util.ExtendedMetaData;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.compare.Comparison;
 import org.eclipse.emf.compare.EMFCompare;
 import org.eclipse.emf.compare.Match;
 import org.eclipse.emf.compare.scope.DefaultComparisonScope;
 import org.eclipse.emf.compare.scope.IComparisonScope;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.uml2.uml.UMLPackage;
 
@@ -20,15 +25,36 @@ public class Comparator {
 
 	public static void main (String[] args) {
 		//QUI HO USATO 2 VOLTE LO STESSO MODELLO PERCHE QUELLO GENERATO DA CHATGPT NON è UN MODELLO VALIDO
-		System.out.println(calculateSimilarity2("human.xmi", "human.xmi"));
+		System.out.println(calculateSimilarity2("GPTMutators/ASPLE/Asple.ecore", "GPTMutators/ASPLE/mutant1.xml", "GPTMutators/ASPLE/mutant2.xml"));
 		//VA DA SE CHE DEVI RENDERLO VALIDO PRIMA DI ESEGUIRE LA COMPARAZIONE
 	}
 	
-	public static double calculateSimilarity2(String art1, String art2) {
-		
+	public static Resource registerMetamodel(String ecoreMetamodel) {
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
 
-		EPackage.Registry.INSTANCE.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
+		ResourceSet rs = new ResourceSetImpl();
+		// enable extended metadata
+		final ExtendedMetaData extendedMetaData = new BasicExtendedMetaData(rs.getPackageRegistry());
+		rs.getLoadOptions().put(XMLResource.OPTION_EXTENDED_META_DATA, extendedMetaData);
+
+		Resource r = rs.getResource(URI.createFileURI(ecoreMetamodel), true);
+		for (EObject eObject : r.getContents()) {
+			if (eObject instanceof EPackage) {
+				EPackage p = (EPackage) eObject;
+				registerSubPackage(p);
+			}
+		}
+		return r;
+	}
+	private static void registerSubPackage(EPackage p) {
+		EPackage.Registry.INSTANCE.put(p.getNsURI(), p);
+		for (EPackage pack : p.getESubpackages()) {
+			registerSubPackage(pack);
+		}
+	}
+	
+	public static double calculateSimilarity2(String metamodel, String art1, String art2) {
+		registerMetamodel(metamodel);
 		
 		
 		URI uri1 = URI.createFileURI(art1);

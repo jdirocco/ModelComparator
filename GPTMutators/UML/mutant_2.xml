@@ -1,0 +1,8 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<umlclassdiagram:ClassDiagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:miniOCL="http://www.ac.uk/york/cs/miniocl/MiniOCLCS" xmlns:umlclassdiagram="http://umlclassdiagram/1.0" xsi:schemaLocation="http://umlclassdiagram/1.0 http://www.ac.uk/york/cs/miniocl/MiniOCLCS" xmi:id="_X5wWUNBSEeeA66FQ4hHrOQ">
+  ...
+  
+  <relations xsi:type="umlclassdiagram:Association" xmi:id="_-qQLgNBSEeeA66FQ4hHrOQ" name="CB" src="_ntZOMNBSEeeA66FQ4hHrOQ" tar="_nas7sNBSEeeA66FQ4hHrOQ"/>
+  ...
+</umlclassdiagram:ClassDiagram>
